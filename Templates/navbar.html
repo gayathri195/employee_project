@@ -26,6 +26,25 @@
             font-weight:bold;
             margin-right:auto;
         }
+        /*========================== 
+        THEME BUTTONS
+        ============================*/
+        .theme-buttons{
+            display: flex;
+            gap:10px;
+            margin-right: 20px;
+        }
+        .theme-buttons a{
+            color: white;
+            text-decoration: none;
+            border: 1px solid #00bcd4;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .theme-buttons a:hover{
+            background-color: #00bcd4;
+        }
         /*Navigation links*/
         .nav-links{
             display: flex;
@@ -68,15 +87,20 @@
         }
     </style>
 </head>
-<body>
+<body class="{{theme}}">
     <nav class="navbar">
         <div class="logo">
             Employee Management System
 
         </div>
+        #THEME-BUTTONS
+        <div class=""theme-buttons">
+             <a href="/set-theme/light">Light</a>
+             <a href="/set-theme/dark">Dark</a>
+        </div>
         <ul class="nav-links">
             <li>
-                <a href="/home">
+                <a href="/">
                    Home
                  </a>
             </li>
@@ -96,20 +120,24 @@
                 </a>
             </li>
             <li>
-                <a href="/login" class="login-btn">
-                    Login
-                </a>
-            </li>
-            <li>
-                <a href="/register" class="register-btn">
-                    Register
+            <!-- LOGOUT -->
+                <a href="/logout" class="logout-button">
+                    Logout
                 </a>
             </li>
         </ul>
     </nav>
     <div class="content">
-        <h1>Welcome To Employee Management System</h1>
-        <p>Manage Your Employees Easily </p>
+        {% if fullname %}
+        <h1>
+            Welcome,{{fullname}}!
+        </h1>
+        {% else %}
+        <h1>Welcome to Employee Management System </h1>
+        {% endif %}
+        <p>
+            Manage your Employees Easily
+        </p>
     </div>
 </body>
 </html>

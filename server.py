@@ -150,7 +150,7 @@ def register_page():
     )
 
     return render_template(
-        "register2.html",
+        "register.html",
         theme=theme
     )
 
@@ -774,6 +774,7 @@ def edit_employee(id):
     salary = request.form.get(
         "salary",
         ""
+        
     ).strip()
 
     joining_date = request.form.get(
