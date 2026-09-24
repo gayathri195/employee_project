@@ -65,6 +65,19 @@ def create_database():
         )
     """)
 
+    #======================================
+    #CONTACT US TABLE
+    #======================================
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS contact_messages (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        email TEXT NOT NULL,
+        phone TEXT,
+        message TEXT NOT NULL
+    )
+""")
     connection.commit()
 
     connection.close()
@@ -184,7 +197,7 @@ def register():
     if not fullname:
 
         return render_template(
-            "register2.html",
+            "register.html",
             theme=request.cookies.get(
                 "theme",
                 "light"
@@ -195,7 +208,7 @@ def register():
     if not username:
 
         return render_template(
-            "register2.html",
+            "register.html",
             theme=request.cookies.get(
                 "theme",
                 "light"
@@ -206,7 +219,7 @@ def register():
     if not password:
 
         return render_template(
-            "register2.html",
+            "register.html",
             theme=request.cookies.get(
                 "theme",
                 "light"
@@ -595,7 +608,7 @@ def employees():
 # 11. SEARCH EMPLOYEES
 # =========================================
 
-@app.route("/search")
+@app.route("/Search")
 def search():
 
     if not login_required():
@@ -859,6 +872,66 @@ def edit_employee(id):
     connection.close()
 
     return redirect("/employees")
+
+#================================
+#CONTACTUS
+#================================
+@app.route("/contactus",methods=["GET"])
+def contactus():
+    if not login_required():
+        return redirect("/login")
+
+    theme = request.cookies.get("theme", "light")
+
+    return render_template(
+        "contactus.html",
+        theme=theme
+    )
+
+
+# =================================
+# CONTACTUS - POST
+# =================================
+@app.route("/contactus", methods=["POST"])
+def contactus_post():
+
+    if not login_required():
+        return redirect("/login")
+
+    name = request.form.get("name", "").strip()
+    email = request.form.get("email", "").strip()
+    phone = request.form.get("phone", "").strip()
+    message = request.form.get("message", "").strip()
+
+    # Validation
+    if not name:
+        return "Name is required!"
+
+    if not email:
+        return "Email is required!"
+
+    if not message:
+        return "Message is required!"
+
+    # Save contact message
+    connection = get_database_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        INSERT INTO contact_messages
+        (name, email, phone, message)
+        VALUES (?, ?, ?, ?)
+    """, (
+        name,
+        email,
+        phone,
+        message
+    ))
+
+    connection.commit()
+    connection.close()
+
+    return redirect("/contactus")
 
 
 # =========================================
